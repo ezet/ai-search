@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar NET", "AStar NET\AStar NET.csproj", "{AF899171-3BDA-4BE4-90C8-B0605DD13307}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar Gui", "AStar Gui\AStar Gui.csproj", "{1F7A9D01-23B0-4289-889C-09CC9FC3CEDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar 2DGrid", "AStar 2DGrid\AStar 2DGrid.csproj", "{0B3CD73A-9389-4680-89F8-19515666AE32}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF899171-3BDA-4BE4-90C8-B0605DD13307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF899171-3BDA-4BE4-90C8-B0605DD13307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF899171-3BDA-4BE4-90C8-B0605DD13307}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF899171-3BDA-4BE4-90C8-B0605DD13307}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F7A9D01-23B0-4289-889C-09CC9FC3CEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F7A9D01-23B0-4289-889C-09CC9FC3CEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F7A9D01-23B0-4289-889C-09CC9FC3CEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F7A9D01-23B0-4289-889C-09CC9FC3CEDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B3CD73A-9389-4680-89F8-19515666AE32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B3CD73A-9389-4680-89F8-19515666AE32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B3CD73A-9389-4680-89F8-19515666AE32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B3CD73A-9389-4680-89F8-19515666AE32}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
