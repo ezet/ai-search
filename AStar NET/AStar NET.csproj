@@ -39,7 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AStar.cs" />
+    <Compile Include="AStarSolver.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="ISolvable.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="INode.cs" />

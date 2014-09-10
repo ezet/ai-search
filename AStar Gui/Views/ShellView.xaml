@@ -1,0 +1,36 @@
+﻿<Window x:Class="eZet.AStar.Gui.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:eZet.AStar.Gui.ViewModels"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:converters="clr-namespace:eZet.AStar.Gui.Converters"
+        d:DataContext="{d:DesignInstance Type=viewModels:ShellViewModel, IsDesignTimeCreatable=False}"
+        Title="ShellView" Height="300" Width="300">
+    <Grid>
+
+        <ItemsControl ItemsSource="{Binding Path=Nodes}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Background="White" Width="500" Height="500"  />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Ellipse Fill="{Binding State, Converter={converters:ColorConverter}}" Width="5" Height="5" />
+                        <!--<Rectangle Visibility="{Binding IsBlocked}" Width="5" Height="5"></Rectangle>-->
+
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Canvas.Top" Value="{Binding Path=Y, Converter={converters:PositionConverter}}" />
+                    <Setter Property="Canvas.Left" Value="{Binding Path=X, Converter={converters:PositionConverter}}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+    </Grid>
+</Window>

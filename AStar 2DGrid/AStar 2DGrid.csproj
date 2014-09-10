@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>eZet.AStar.Grid</RootNamespace>
-    <AssemblyName>AStar 2DGrid</AssemblyName>
+    <AssemblyName>AStarGrid</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,6 +43,7 @@
     <Compile Include="Grid2DBarrier.cs" />
     <Compile Include="Grid2DNode.cs" />
     <Compile Include="GridLoader.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
