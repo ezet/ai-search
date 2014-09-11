@@ -28,7 +28,7 @@ namespace eZet.AStar.Grid {
         public Grid2DNode Start { get; set; }
 
         public bool IsSolution(INode node) {
-            return node.Equals(Goal.First());
+            return Goal.Contains(node);
         }
 
         public double Cost(INode lastNode, INode node) {
@@ -40,7 +40,11 @@ namespace eZet.AStar.Grid {
             return Distance2D(n.X, n.Y, Goal.First().X, Goal.First().Y);
         }
 
-        public List<Grid2DNode> Goal { get; private set; }
+        public void AddGoal(int x, int y) {
+            Goal.Add(Grid[x, y]);
+        }
+
+        private List<Grid2DNode> Goal { get; set; }
 
         public Grid2DNode[,] Grid { get; set; }
 
@@ -51,11 +55,11 @@ namespace eZet.AStar.Grid {
             }
         }
 
-        public bool IsBlocked(int x, int y) {
+        private bool IsBlocked(int x, int y) {
             return Grid[x, y].IsBlocked;
         }
 
-        public bool IsOnGrid(int x, int y) {
+        private bool IsOnGrid(int x, int y) {
             return x < Width && x >= 0 && y < Height && y >= 0;
         }
 
@@ -82,12 +86,13 @@ namespace eZet.AStar.Grid {
         }
 
         public static int Distance2D(int x1, int y1, int x2, int y2) {
-            int result = 0;
-            double part1 = Math.Pow((x2 - x1), 2);
-            double part2 = Math.Pow((y2 - y1), 2);
-            double underRadical = part1 + part2;
-            result = (int)Math.Sqrt(underRadical);
-            return result;
+            return Math.Abs(x2 - x1) + Math.Abs(y2 - y1);
+            //int result = 0;
+            //double part1 = Math.Pow((x2 - x1), 2);
+            //double part2 = Math.Pow((y2 - y1), 2);
+            //double underRadical = part1 + part2;
+            //result = (int)Math.Sqrt(underRadical);
+            //return result;
         }
     }
 }

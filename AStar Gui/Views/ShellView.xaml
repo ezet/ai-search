@@ -19,7 +19,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <Ellipse Fill="{Binding State, Converter={converters:ColorConverter}}" Width="5" Height="5" />
+                        <Ellipse Fill="{Binding State, Converter={converters:ColorConverter}}" Width="10" Height="10" />
                         <!--<Rectangle Visibility="{Binding IsBlocked}" Width="5" Height="5"></Rectangle>-->
 
                     </StackPanel>

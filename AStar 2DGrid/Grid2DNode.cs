@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using eZet.AStar.Grid.Annotations;
-using eZet.AStar.Gui;
 
 namespace eZet.AStar.Grid {
 

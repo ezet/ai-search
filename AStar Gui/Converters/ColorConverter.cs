@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
-using eZet.AStar.Grid;
 
 namespace eZet.AStar.Gui.Converters {
     public class ColorConverter :  MarkupExtension, IValueConverter {
@@ -22,6 +21,8 @@ namespace eZet.AStar.Gui.Converters {
                 return Brushes.Red;
             if (state == NodeState.Open)
                 return Brushes.Green;
+            if (state == NodeState.Processing)
+                return Brushes.Blue;
             return Brushes.Black;
         }
 

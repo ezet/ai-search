@@ -5,7 +5,7 @@ namespace eZet.AStar.Grid {
 
         public static Grid2D Load(string path) {
             //return parse(path);
-            return parse("10,10 0,0 9,9");
+            return parse("10,10 0,0 9,0");
         }
 
         static Grid2D parse(string data) {
@@ -13,7 +13,8 @@ namespace eZet.AStar.Grid {
             var dimensions = tokens[0].Split(',');
             var grid = new Grid2D(int.Parse(dimensions[0]), int.Parse(dimensions[1]));
             grid.Start = parseNode(tokens[1]);
-            grid.Goal.Add(parseNode(tokens[2]));
+            var goal = tokens[2].Split(',');
+            grid.AddGoal(int.Parse(goal[0]), int.Parse(goal[1]));
             for (var i = 3; i < tokens.Length; ++i) {
                 grid.AddBarriers(parseBarrier(tokens[i]));
             }

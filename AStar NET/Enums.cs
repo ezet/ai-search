@@ -1,6 +1,6 @@
-﻿namespace eZet.AStar.Gui {
+﻿namespace eZet.AStar {
 
     public enum NodeState {
-        Default, Open, Closed
+        Default, Open, Processing, Closed
     }
 }
