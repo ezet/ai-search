@@ -25,7 +25,7 @@ namespace eZet.AStar.Grid {
 
         public int Width { get; private set; }
 
-        public Grid2DNode Start { get; set; }
+        private Grid2DNode Start { get; set; }
 
         public bool IsSolution(INode node) {
             return Goal.Contains(node);
@@ -37,11 +37,15 @@ namespace eZet.AStar.Grid {
 
         public double Estimate(INode node) {
             var n = (Grid2DNode)node;
-            return Distance2D(n.X, n.Y, Goal.First().X, Goal.First().Y);
+            return ManhattenDistance(n.X, n.Y, Goal.First().X, Goal.First().Y);
         }
 
         public void AddGoal(int x, int y) {
             Goal.Add(Grid[x, y]);
+        }
+
+        public void SetStart(int x, int y) {
+            Start = Grid[x, y];
         }
 
         private List<Grid2DNode> Goal { get; set; }
@@ -85,14 +89,18 @@ namespace eZet.AStar.Grid {
             return null;
         }
 
-        public static int Distance2D(int x1, int y1, int x2, int y2) {
+        private static int ManhattenDistance(int x1, int y1, int x2, int y2) {
             return Math.Abs(x2 - x1) + Math.Abs(y2 - y1);
-            //int result = 0;
-            //double part1 = Math.Pow((x2 - x1), 2);
-            //double part2 = Math.Pow((y2 - y1), 2);
-            //double underRadical = part1 + part2;
-            //result = (int)Math.Sqrt(underRadical);
-            //return result;
+
+        }
+
+        private static int EuclidianDistance(int x1, int y1, int x2, int y2) {
+            int result = 0;
+            double part1 = Math.Pow((x2 - x1), 2);
+            double part2 = Math.Pow((y2 - y1), 2);
+            double underRadical = part1 + part2;
+            result = (int)Math.Sqrt(underRadical);
+            return result;
         }
     }
 }

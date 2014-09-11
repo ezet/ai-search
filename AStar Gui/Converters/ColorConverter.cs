@@ -23,7 +23,8 @@ namespace eZet.AStar.Gui.Converters {
                 return Brushes.Green;
             if (state == NodeState.Processing)
                 return Brushes.Blue;
-            return Brushes.Black;
+            if (state == NodeState.Solution)
+                return Brushes.Aqua;return Brushes.Black;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {

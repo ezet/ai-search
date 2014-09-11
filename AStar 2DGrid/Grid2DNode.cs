@@ -5,6 +5,7 @@ using eZet.AStar.Grid.Annotations;
 namespace eZet.AStar.Grid {
 
     public class Grid2DNode : INode, INotifyPropertyChanged {
+
         private NodeState _state;
 
         public Grid2DNode(int x, int y, bool isBlocked = false) {
@@ -12,8 +13,6 @@ namespace eZet.AStar.Grid {
             Y = y;
             IsBlocked = isBlocked;
         }
-
- 
 
         public NodeState State {
             get { return _state; }
@@ -29,10 +28,6 @@ namespace eZet.AStar.Grid {
         public int X { get; private set; }
 
         public int Y { get; private set; }
-
-        
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

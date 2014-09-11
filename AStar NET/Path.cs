@@ -18,7 +18,6 @@ namespace eZet.AStar {
 
         public Path(INode start)
             : this(start, null, 0) {
-
         }
 
         public Path AddNode(INode node, double edgeCost) {

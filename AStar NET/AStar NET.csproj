@@ -39,13 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AStarSolver.cs" />
+    <Compile Include="AStar.cs" />
+    <Compile Include="Dfs.cs" />
+    <Compile Include="Bfs.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="ISolvable.cs" />
+    <Compile Include="IAlgorithm.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Solver.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
