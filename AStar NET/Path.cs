@@ -4,15 +4,15 @@ using System.Collections.Generic;
 namespace eZet.AStar {
     public class Path : IEnumerable<INode> {
 
-        public INode CurrentNode { get; private set; }
+        public INode Node { get; private set; }
 
-        public Path PreviousNodes { get; private set; }
+        public Path PreviousStep { get; private set; }
 
         public double TotalCost { get; private set; }
 
-        private Path(INode currentNode, Path previousNodes, double totalCost) {
-            CurrentNode = currentNode;
-            PreviousNodes = previousNodes;
+        private Path(INode node, Path previousStep, double totalCost) {
+            Node = node;
+            PreviousStep = previousStep;
             TotalCost = totalCost;
         }
 
@@ -25,8 +25,8 @@ namespace eZet.AStar {
         }
 
         public IEnumerator<INode> GetEnumerator() {
-            for (Path p = this; p != null; p = p.PreviousNodes) {
-                yield return p.CurrentNode;
+            for (Path p = this; p != null; p = p.PreviousStep) {
+                yield return p.Node;
             }
         }
 
