@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0B3CD73A-9389-4680-89F8-19515666AE32}</ProjectGuid>
+    <ProjectGuid>{AF899171-3BDA-4BE4-90C8-B0605DD13307}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>eZet.AStar.Grid</RootNamespace>
-    <AssemblyName>AStarGrid</AssemblyName>
+    <RootNamespace>eZet.AStar</RootNamespace>
+    <AssemblyName>AStar NET</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,17 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Grid2D.cs" />
-    <Compile Include="Grid2DNode.cs" />
-    <Compile Include="GridLoader.cs" />
-    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Algorithms\AStar.cs" />
+    <Compile Include="Algorithms\Dfs.cs" />
+    <Compile Include="Algorithms\Bfs.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="ISearchSolvable.cs" />
+    <Compile Include="ISearchAlgorithm.cs" />
+    <Compile Include="Path.cs" />
+    <Compile Include="ISearchNode.cs" />
+    <Compile Include="PriorityQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AStar\AStar.csproj">
-      <Project>{AF899171-3BDA-4BE4-90C8-B0605DD13307}</Project>
-      <Name>AStar</Name>
-    </ProjectReference>
+    <Compile Include="SearchSolver.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

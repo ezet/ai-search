@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("AStar 2DGrid")]
+[assembly: AssemblyTitle("Graph Colouring")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AStar 2DGrid")]
+[assembly: AssemblyProduct("Graph Colouring")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("f1352a34-8913-4838-b5a1-bbd44bfad27e")]
+[assembly: Guid("3926e770-6d19-4ada-ae70-a1ad39a59a85")]
 
 // Version information for an assembly consists of the following four values:
 //

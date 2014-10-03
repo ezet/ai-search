@@ -1,25 +1,28 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace eZet.AStar.Grid {
     public static class GridLoader {
 
-        static GridLoader() {
-            GridBank = new List<string>();
-            GridBank.Add("10,10 0,0 9,9 2,3,5,5 8,8,2,1");
-            GridBank.Add("20,20 19,3 2,18 5,5,10,10 1,2,4,1");
-            GridBank.Add("20,20 0,0 19,19 17,10,2,1 14,4,5,2 3,16,10,2 13,7,5,3 15,15,3,3");
-            GridBank.Add("10,10 0,0 9,5 3,0,2,7 6,0,4,4 6,6,2,4");
-            GridBank.Add("10,10 0,0 9,9 3,0,2,7 6,0,4,4 6,6,2,4");
-            GridBank.Add("20,20 0,0 19,13 4,0,4,16 12,4,2,16 16,8,4,4");
+        /// <summary>
+        /// Loads the gridbank from disk
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> LoadBank() {
+            return File.ReadAllLines("../../grids.txt").ToList();
         }
 
-        public static List<string> GridBank { get; set; }
-
-        public static Grid2D Load(string data) {
-            return parse(data);
-        }
-
-        private static Grid2D parse(string data) {
+        /// <summary>
+        /// Parses a grid string and returns a grid
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static Grid2D Parse(string data) {
+            data = data.Trim();
+            if (data.Contains("(")) {
+                data = data.Replace(" ", "").Replace(")(", " ").Replace("(", "").Replace(")", "");
+            }
             var tokens = data.Split(' ');
             var dimensions = tokens[0].Split(',');
             var grid = new Grid2D(int.Parse(dimensions[0]), int.Parse(dimensions[1]));
@@ -33,6 +36,11 @@ namespace eZet.AStar.Grid {
             return grid;
         }
 
+        /// <summary>
+        /// Parses barrier coordinates
+        /// </summary>
+        /// <param name="barrier"></param>
+        /// <returns></returns>
         private static List<Grid2DNode> parseBarrier(string barrier) {
             var barrierData = barrier.Split(',');
             var list = new List<Grid2DNode>();
