@@ -13,6 +13,8 @@ namespace eZet.AStar.Algorithms {
         /// <param name="throttle"></param>
         public AStar(int throttle) {
             Throttle = throttle;
+            _closed = new HashSet<ISearchNode>();
+            _open = new PriorityQueue<double, Path>();
         }
 
         /// <summary>
@@ -53,8 +55,8 @@ namespace eZet.AStar.Algorithms {
         /// <param name="solvable">A ISearchSolvable object</param>
         /// <returns>A solution path or null</returns>
         public Path Run(ISearchSolvable solvable) {
-            _closed = new HashSet<ISearchNode>();
             _open = new PriorityQueue<double, Path>();
+            _closed.Clear();
             _open.Enqueue(0, new Path(solvable.StartNode));
             solvable.StartNode.State = NodeState.Open;
             while (!_open.IsEmpty) {

@@ -7,8 +7,8 @@
     <ProjectGuid>{C4D61369-7D8B-459B-8879-EAB52BEFC9BF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>eZet.Gac.Gui</RootNamespace>
-    <AssemblyName>GAC Solver GUI</AssemblyName>
+    <RootNamespace>eZet.Gac.Vc</RootNamespace>
+    <AssemblyName>GacVcGui</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -125,9 +125,9 @@
       <Project>{AF899171-3BDA-4BE4-90C8-B0605DD13307}</Project>
       <Name>AStar</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Gac Vc\GAC Vertex Coloring.csproj">
+    <ProjectReference Include="..\Gac Vc\GAC VC.csproj">
       <Project>{28FFF5BE-0501-4779-BD60-F258550B6276}</Project>
-      <Name>GAC Vertex Coloring</Name>
+      <Name>GAC VC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gac\GAC.csproj">
       <Project>{E66F0448-302E-416D-A80F-007AB0C8333A}</Project>

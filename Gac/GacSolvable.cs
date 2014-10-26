@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using eZet.AStar;
 using eZet.Csp.Constraints;
 using MoreLinq;
@@ -10,44 +12,34 @@ namespace eZet.Csp {
         /// Represents the problem status
         /// </summary>
         public enum Result {
-            Solved,
             Unsolved,
+            Solved,
             Failed
         }
-
-        /// <summary>
-        /// A list of constraints
-        /// </summary>
-        private readonly List<IConstraint> _constraints;
 
         /// <summary>
         /// A qeueu of filter tasks
         /// </summary>
         private readonly Queue<FilterTask> _reviseQueue;
 
-        public GacSolvable(Graph graph, IEnumerable<IDomainValue> domainValues) {
-            Graph = graph;
+        public GacSolvable(CspModel model) {
+            Model = model;
             Algorithm = new AStar.Algorithms.AStar(0);
             StartNode = new GacState();
             AppliedStates = new Stack<GacState>();
             AppliedStates.Push((GacState) StartNode);
-            _reviseQueue = new Queue<FilterTask>(100);
-            _constraints = new List<IConstraint>();
-            DomainValues = domainValues.ToList();
-            foreach (var node in graph.Nodes) {
-                node.SetValues(DomainValues);
+            _reviseQueue = new ReviseQueue();
+            foreach (var c in model.Constraints) {
+                foreach (var v in c.Variables) {
+                    v.Constraints.Add(c);
+                }
             }
         }
 
         /// <summary>
-        /// Gets a list of all possible domain values
-        /// </summary>
-        public List<IDomainValue> DomainValues { get; private set; }
-
-        /// <summary>
         /// Gets the graph model
         /// </summary>
-        public Graph Graph { get; private set; }
+        public CspModel Model { get; private set; }
 
         /// <summary>
         /// Gets a stack of all currently applied states
@@ -64,29 +56,6 @@ namespace eZet.Csp {
         /// </summary>
         public Path SearchPath { get; private set; }
 
-        /// <summary>
-        /// Adds a collection of constraints
-        /// </summary>
-        /// <param name="constraints"></param>
-        public void AddConstraints(IEnumerable<IConstraint> constraints) {
-            foreach (var constraint in constraints) {
-                _constraints.Add(constraint);
-                foreach (var node in constraint.Variables) {
-                    node.Constraints.Add(constraint);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds a single constraint
-        /// </summary>
-        /// <param name="constraint"></param>
-        public void AddConstraint(IConstraint constraint) {
-            foreach (var node in constraint.Variables) {
-                node.Constraints.Add(constraint);
-            }
-            _constraints.Add(constraint);
-        }
 
         /// <summary>
         /// Solves the CSP 
@@ -94,7 +63,7 @@ namespace eZet.Csp {
         /// <returns></returns>
         public Result Solve() {
             // initialize
-            enqueueAllConstraints(Graph.Nodes);
+            enqueueAllConstraints(Model.Nodes);
             var result = filterLoop();
             if (result == Result.Unsolved) {
                 SearchPath = runIncrementalSearch();
@@ -108,22 +77,24 @@ namespace eZet.Csp {
         /// </summary>
         /// <returns></returns>
         private Result filterLoop() {
+            var status = Result.Unsolved;
             while (_reviseQueue.Any()) {
                 var task = _reviseQueue.Dequeue();
                 bool reduced = reduce(task.Node, task.Constraint);
-                var status = Status;
-                if (status == Result.Solved) {
-                    return Result.Solved;
-                }
-                if (Status == Result.Failed) {
+                status = Status;
+                //if (status == Result.Solved) {
+                //    return Result.Solved;
+                //}
+                if (status == Result.Failed) {
                     AppliedStates.Peek().UnsatisfiedConstraints.Add(task.Constraint);
+                    //Thread.Sleep(500);
                     return Result.Failed;
                 }
                 if (reduced) {
                     enqueueRelatedConstraints(task.Node, task.Constraint);
                 }
             }
-            return Result.Unsolved;
+            return status;
         }
 
         /// <summary>
@@ -134,18 +105,12 @@ namespace eZet.Csp {
         /// <returns></returns>
         private bool reduce(IVariable variable, IConstraint constraint) {
             var reduced = false;
-            foreach (var focusValue in variable.DomainValues.ToList()) {
-                bool satisfied = false;
-                foreach (var testValue in constraint.Variables.Single(v => v != variable).DomainValues) {
-                    satisfied = constraint.Eval(new[] {focusValue, testValue});
-                    if (satisfied) break;
-                }
-                if (!satisfied) {
-                    removeDomainValue(variable, focusValue);
-                    reduced = true;
-                    // Add the reductions to the state tracker
-                    AppliedStates.Peek().DomainReductions.Add(new NodeDomainPair(variable, focusValue));
-                }
+            var newDomain = constraint.Eval(variable);
+            var removedValues =  variable.DomainValues.Where(v => !newDomain.Contains(v));
+            foreach (var value in removedValues.ToList()) {
+                reduced = true;
+                removeDomainValue(variable, value);
+                AppliedStates.Peek().DomainReductions.Add(new NodeDomainPair(variable, value));
             }
             return reduced;
         }
@@ -164,8 +129,8 @@ namespace eZet.Csp {
         /// </summary>
         private void backtrack() {
             var s = AppliedStates.Pop();
-            foreach (var domain in s.DomainReductions) {
-                domain.Node.AddValue(domain.DomainValue);
+            foreach (var reduction in s.DomainReductions) {
+                reduction.Node.AddValue(reduction.DomainValue);
             }
         }
 
@@ -197,6 +162,7 @@ namespace eZet.Csp {
         /// </summary>
         /// <returns></returns>
         private Path runIncrementalSearch() {
+            Thread.Sleep(500);
             return Algorithm.Run(this);
         }
 
@@ -239,9 +205,9 @@ namespace eZet.Csp {
         /// </summary>
         private Result Status {
             get {
-                if (Graph.Nodes.Any(p => !p.DomainValues.Any()))
+                if (Model.Nodes.Any(p => !p.DomainValues.Any()))
                     return Result.Failed;
-                if (Graph.Nodes.All(p => p.DomainValues.Count == 1))
+                if (Model.Nodes.All(p => p.DomainValues.Count == 1))
                     return Result.Solved;
                 return Result.Unsolved;
             }
@@ -282,7 +248,8 @@ namespace eZet.Csp {
         public double Estimate(ISearchNode node) {
             var state = (GacState) node;
             applyState(state);
-            double estimate = Graph.Nodes.Sum(n => n.DomainValues.Count - 1);
+            double estimate = Model.Nodes.Sum(n => n.DomainValues.Count - 1);
+            //double estimate = Model.Nodes.Count(n => n.DomainValues.Count > 1);
             backtrack();
             return estimate;
         }
@@ -295,7 +262,7 @@ namespace eZet.Csp {
         public IEnumerable<ISearchNode> Expand(ISearchNode node) {
             var state = (GacState) node;
             // Choose the variable with the smallest domain
-            var variables = Graph.Nodes.Where(v => v.DomainValues.Count > 1).ToList();
+            var variables = Model.Nodes.Where(v => v.DomainValues.Count > 1).ToList();
             if (!variables.Any())
                 return new List<ISearchNode>();
             IVariable assumedNode = variables.MinBy(v => v.DomainValues.Count);

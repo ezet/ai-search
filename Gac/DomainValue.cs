@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace eZet.Csp.GraphColouring {
+namespace eZet.Csp {
     /// <summary>
     /// Represents a integer domain value
     /// </summary>

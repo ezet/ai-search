@@ -42,5 +42,9 @@ namespace eZet.Csp.Constraints {
             }
             return (bool) Delegate.DynamicInvoke();
         }
+
+        public IEnumerable<IDomainValue> Eval(IVariable focusVariable) {
+            throw new NotImplementedException();
+        }
     }
 }

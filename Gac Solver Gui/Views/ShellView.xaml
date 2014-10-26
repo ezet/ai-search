@@ -11,12 +11,12 @@
              xmlns:viewModels1="clr-namespace:eZet.Gac.Gui.ViewModels"
              xmlns:converters="clr-namespace:eZet.Gac.Gui.Converters"
              xmlns:gui="clr-namespace:eZet.Gac.Gui"
-             xmlns:graphColouring="clr-namespace:eZet.Csp.GraphColouring;assembly=VertexColouring"
+             xmlns:graphColouring="clr-namespace:VertexColouring;assembly=VertexColouring"
              xmlns:csp="clr-namespace:eZet.Csp;assembly=Csp"
              d:DataContext="{d:DesignInstance Type=viewModels1:ShellViewModel, IsDesignTimeCreatable=False}"
              Title="ShellView" MinHeight="600" MinWidth="800">
     <dx:DXWindow.Resources>
-        <DataTemplate x:Key="GraphNodeTemplate" DataType="graphColouring:SimpleVariable">
+        <DataTemplate x:Key="GraphNodeTemplate" DataType="graphColouring:GridVariable">
             <Ellipse Fill="{Binding DomainValues, Converter={converters:DomainValuesToColorConverter}}"
                      Width="9"
                      Height="9" 

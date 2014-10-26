@@ -128,9 +128,9 @@
                                 <ItemsControl.ItemContainerStyle>
                                     <Style>
                                         <Setter Property="Canvas.Top"
-                                                Value="{Binding Path=Y, Converter={converters:PositionConverter}}" />
+                                                Value="{Binding Y, Converter={converters:PositionConverter}}" />
                                         <Setter Property="Canvas.Left"
-                                                Value="{Binding Path=X, Converter={converters:PositionConverter}}" />
+                                                Value="{Binding X, Converter={converters:PositionConverter}}" />
                                     </Style>
                                 </ItemsControl.ItemContainerStyle>
                             </ItemsControl>

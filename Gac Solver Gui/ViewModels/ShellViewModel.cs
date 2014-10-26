@@ -11,11 +11,10 @@ using DevExpress.Mvvm;
 using eZet.AStar;
 using eZet.AStar.Algorithms;
 using eZet.Csp;
-using eZet.Csp.GraphColouring;
-using eZet.Gac.Gui.Models;
+using eZet.Csp.VertexColouring;
+using VertexColouring;
 using Microsoft.Win32;
 using MoreLinq;
-using ICanvasObject = eZet.Csp.GraphColouring.ICanvasObject;
 
 namespace eZet.Gac.Gui.ViewModels {
     [Export]
@@ -23,7 +22,7 @@ namespace eZet.Gac.Gui.ViewModels {
         private int _delay;
         private string _statusText;
         private VertexColorSolver _solver;
-        private Graph _graph;
+        private VertexColourModel _model;
         private int _domainValueCount;
         private bool _running;
         private VertexColorResult _result;
@@ -40,8 +39,8 @@ namespace eZet.Gac.Gui.ViewModels {
 
         public ShellViewModel() {
             DisplayName = "GAC with Incremental Search";
-            RunCommand = new DelegateCommand(executeRun, () => Graph != null && !Running);
-            HaltCommand = new DelegateCommand(executeHalt, () => Graph != null && Running);
+            RunCommand = new DelegateCommand(executeRun, () => Model != null && !Running);
+            HaltCommand = new DelegateCommand(executeHalt, () => Model != null && Running);
             OpenCommand = new DelegateCommand(executeOpen);
             SetAlgorithmCommand = new DelegateCommand<string>(executeSetAlgorithm);
             PropertyChanged += OnPropertyChanged;
@@ -62,11 +61,11 @@ namespace eZet.Gac.Gui.ViewModels {
         }
 
 
-        public Graph Graph {
-            get { return _graph; }
+        public VertexColourModel Model {
+            get { return _model; }
             private set {
-                if (Equals(value, _graph)) return;
-                _graph = value;
+                if (Equals(value, _model)) return;
+                _model = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -130,7 +129,7 @@ namespace eZet.Gac.Gui.ViewModels {
             StatusText = "Processing...";
             Cts = new CancellationTokenSource();
             Algorithm.CancellationToken = Cts.Token;
-            var task = Task.Run(() => _solver.Solve(Graph, DomainValueCount, Algorithm));
+            var task = Task.Run(() => _solver.Solve(Model, DomainValueCount, Algorithm));
             var result = await task;
             Running = false;
             if (Cts.IsCancellationRequested) {
@@ -152,20 +151,20 @@ namespace eZet.Gac.Gui.ViewModels {
             var dialog = new OpenFileDialog();
             if (dialog.ShowDialog().GetValueOrDefault()) {
                 try {
-                    Graph = VertexColorSolver.Load(dialog.FileName);
+                    Model = VertexColorSolver.Load(dialog.FileName);
                     StatusText = "Graph loaded";
                 } catch (Exception) {
                     StatusText = "Could not load graph: Invalid format";
                     return;
                 }
-                var list = Graph.Nodes.Cast<ICanvasObject>().ToList();
-                transformGraph(list.Cast<SimpleVariable>().ToList());
-                list.AddRange(Graph.Edges.Cast<ICanvasObject>());
+                var list = Model.Nodes.Cast<ICanvasObject>().ToList();
+                transformGraph(list.Cast<GridVariable>().ToList());
+                list.AddRange(Model.Edges.Cast<ICanvasObject>());
                 CanvasObjects = new BindableCollection<ICanvasObject>(list);
             }
         }
 
-        private void transformGraph(IEnumerable<SimpleVariable> variables) {
+        private void transformGraph(IEnumerable<GridVariable> variables) {
             // transform negative coordinates
             var minX = variables.MinBy(v => v.X).X;
             var minY = variables.MinBy(v => v.Y).Y;

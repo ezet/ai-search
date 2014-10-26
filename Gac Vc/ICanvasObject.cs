@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace eZet.Csp.GraphColouring {
+namespace eZet.Csp.VertexColouring {
     /// <summary>
     /// A interface for objects that can be drawn on a canvas
     /// </summary>

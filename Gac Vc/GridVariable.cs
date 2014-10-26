@@ -6,12 +6,12 @@ using System.Runtime.CompilerServices;
 using eZet.Csp.Constraints;
 using eZet.Csp.Properties;
 
-namespace eZet.Csp.GraphColouring {
+namespace eZet.Csp.VertexColouring {
 
     /// <summary>
     /// Represents a variable that can be drawn and bound
     /// </summary>
-    public class SimpleVariable : IVariable, ICanvasObject {
+    public class GridVariable : IVariable, ICanvasObject {
 
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace eZet.Csp.GraphColouring {
         /// <param name="identifier"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public SimpleVariable(string identifier, double x, double y) {
+        public GridVariable(string identifier, double x, double y) {
             Constraints = new List<IConstraint>();
             DomainValues = new ObservableCollection<IDomainValue>();
             Identifier = identifier;

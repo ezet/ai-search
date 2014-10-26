@@ -6,7 +6,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
 using eZet.Csp;
-using eZet.Csp.GraphColouring;
+using VertexColouring;
 
 namespace eZet.Gac.Gui.Converters {
     public class DomainValuesToColorConverter : MarkupExtension, IValueConverter {

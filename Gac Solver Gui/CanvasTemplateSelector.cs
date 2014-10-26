@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using eZet.Csp;
-using eZet.Csp.GraphColouring;
+using eZet.Csp.VertexColouring;
 
 namespace eZet.Gac.Gui {
     public class CanvasTemplateSelector : DataTemplateSelector {
@@ -11,7 +10,7 @@ namespace eZet.Gac.Gui {
         public DataTemplate GraphEdgeTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container) {
-            if (item.GetType() == typeof (SimpleVariable))
+            if (item.GetType() == typeof (GridVariable))
                 return GraphNodeTemplate;
             if (item.GetType() == typeof (GraphEdge))
                 return GraphEdgeTemplate;

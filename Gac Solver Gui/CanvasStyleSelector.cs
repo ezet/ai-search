@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using eZet.Csp.GraphColouring;
+using eZet.Csp.VertexColouring;
 
 namespace eZet.Gac.Gui {
     public class CanvasStyleSelector : StyleSelector {
@@ -9,7 +9,7 @@ namespace eZet.Gac.Gui {
         public Style GraphEdgeStyle { get; set; }
 
         public override Style SelectStyle(object item, DependencyObject container) {
-            if (item.GetType() == typeof (SimpleVariable))
+            if (item.GetType() == typeof (GridVariable))
                 return GraphNodeStyle;
             return GraphEdgeStyle;
         }

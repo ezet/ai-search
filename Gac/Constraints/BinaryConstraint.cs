@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Linq.Expressions;
 using DynamicExpression = System.Linq.Dynamic.DynamicExpression;
 
@@ -41,23 +42,34 @@ namespace eZet.Csp.Constraints {
         private Func<IDomainValue, IDomainValue, bool> createDelegate() {
             var list = new List<ParameterExpression>();
             foreach (var node in Variables) {
-                list.Add(System.Linq.Expressions.Expression.Parameter(typeof (IDomainValue),
+                list.Add(System.Linq.Expressions.Expression.Parameter(typeof(IDomainValue),
                     "@" + node.Identifier.ToString(CultureInfo.InvariantCulture)));
             }
-            var lambda = DynamicExpression.ParseLambda(list.ToArray(), typeof (bool), Expression, null);
-            return (Func<IDomainValue, IDomainValue, bool>) lambda.Compile();
+            var lambda = DynamicExpression.ParseLambda(list.ToArray(), typeof(bool), Expression, null);
+            return (Func<IDomainValue, IDomainValue, bool>)lambda.Compile();
         }
 
         /// <summary>
-        /// Evaluates the constraint with the given values
+        /// Evaluates the constraint for all possible domain combinations.
+        /// Returns a list of valid domain values.
         /// </summary>
-        /// <param name="values"></param>
         /// <returns></returns>
-        public bool Eval(params IDomainValue[] values) {
+        public IEnumerable<IDomainValue> Eval(IVariable focusVariable) {
             if (Delegate == null) {
                 Delegate = createDelegate();
             }
-            return Delegate.Invoke(values[0], values[1]);
+            var newDomain = new List<IDomainValue>();
+            foreach (var value1 in focusVariable.DomainValues) {
+                bool satisfied = false;
+                foreach (var value2 in Variables.Single(v => v != focusVariable).DomainValues) {
+                    satisfied = Delegate.Invoke(value1, value2);
+                    if (satisfied) {
+                        newDomain.Add(value1);
+                        break;
+                    }
+                }
+            }
+            return newDomain;
         }
     }
 }

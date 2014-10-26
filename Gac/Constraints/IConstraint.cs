@@ -11,10 +11,10 @@ namespace eZet.Csp.Constraints {
         IEnumerable<IVariable> Variables { get; }
 
         /// <summary>
-        /// Evaluetes this constraint, using the values passes as parameter.
+        /// Evaluates the constraint. Returns a list of all domain values for the focus variable that does not satisfy the constriant.
         /// </summary>
-        /// <param name="values"></param>
-        /// <returns>Returns true if the constraint is satisfied, otherwise false.</returns>
-        bool Eval(params IDomainValue[] values);
+        /// <param name="focusVariable"></param>
+        /// <returns></returns>
+        IEnumerable<IDomainValue> Eval(IVariable focusVariable);
     }
 }

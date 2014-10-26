@@ -1,4 +1,4 @@
-﻿namespace eZet.Csp.GraphColouring {
+﻿namespace VertexColouring {
     public class VertexColorResult {
         public int UnsatisfiedConstraints { get; set; }
 

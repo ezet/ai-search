@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using eZet.Csp.Properties;
 
-namespace eZet.Csp.GraphColouring {
+namespace eZet.Csp.VertexColouring {
 
     /// <summary>
     /// Represents a simple graph edge, that can be drawn on a canvas
