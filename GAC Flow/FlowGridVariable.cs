@@ -6,13 +6,13 @@ using eZet.Csp.Constraints;
 using eZet.Csp.Flow.Annotations;
 
 namespace eZet.Csp.Flow {
-    public class FlowGridVariable : IConnectedVariable, INotifyPropertyChanged {
+    public class FlowGridVariable : IVariable, INotifyPropertyChanged {
 
         public FlowGridVariable(string identifier, int x, int y) {
             Identifier = identifier;
             X = x;
             Y = y;
-   
+
             DomainValues = new List<IDomainValue>();
             Constraints = new List<IConstraint>();
         }
@@ -29,10 +29,6 @@ namespace eZet.Csp.Flow {
         public IList<IDomainValue> DomainValues { get; private set; }
         public IList<IConstraint> Constraints { get; private set; }
 
-        public IEnumerable<IConnectedVariable> Neighbours { get; private set; }
-
-        public IConnectedVariable Out { get; set; }
-        public IConnectedVariable In { get; set; }
 
         public void SetValues(IEnumerable<IDomainValue> values) {
             DomainValues.Clear();
@@ -42,14 +38,14 @@ namespace eZet.Csp.Flow {
 
         public void RemoveValue(IDomainValue value) {
             DomainValues.Remove(value);
-            OnPropertyChanged("DomainValues");
+            if (DomainValues.Count < 2)
+                OnPropertyChanged("DomainValues");
         }
 
         public void AddValue(IDomainValue value) {
             DomainValues.Add(value);
-            OnPropertyChanged("DomainValues");
-            In = null;
-            Out = null;
+            if (DomainValues.Count < 2)
+                OnPropertyChanged("DomainValues");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

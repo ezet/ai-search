@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using eZet.Csp.Constraints;
+using MoreLinq;
 
 namespace eZet.Csp.Flow {
     public class FlowGridModel : CspModel {
@@ -20,42 +21,34 @@ namespace eZet.Csp.Flow {
             var list = new List<FlowGridVariable>();
             _nodes = new FlowGridVariable[dimension, dimension];
 
-
-
-
             DomainValues = domainValues;
-
-            for (int i = 0; i < domainValueCount; ++i) {
-                domainValues.Add(new FlowGridDomainValue(i, null, null));
-            }
-
+            Nodes = list;
 
             for (int y = 0; y < dimension; ++y) {
                 for (int x = 0; x < dimension; ++x) {
-                    _nodes[y, x] = new FlowGridVariable((y * dimension + x).ToString(CultureInfo.InvariantCulture), x, y);
-                    _nodes[y, x].SetValues(DomainValues);
+                    _nodes[y, x] = new FlowGridVariable(x + "," + y, x, y);
                     list.Add(_nodes[y, x]);
                 }
             }
 
-
-            //foreach (var node in list) {
-            //    var neighbours = getNeighbours(node);
-            //    foreach (var inNode in neighbours) {
-            //        foreach (var outNode in neighbours.Except(new[] {inNode})) {
-            //            for (var i = 0; i < domainValueCount; ++i) {
-            //                var domainValue =
-            //                    domainValues.SingleOrDefault(v => v.Value == i && v.In == inNode && v.Out == outNode);
-            //                if (domainValue == null) {
-            //                    domainValue = new FlowGridDomainValue(i, inNode, outNode);
-            //                    domainValues.Add(domainValue);
-            //                }
-            //                node.DomainValues.Add(domainValue);
-            //            }
-            //        }
-            //    }
-            //}
-            Nodes = list;
+            foreach (var node in list) {
+                var neighbours = getNeighbours(node).ToList();
+                var nodeValues = new List<FlowGridDomainValue>();
+                foreach (var inNode in neighbours) {
+                    foreach (var outNode in neighbours.Except(new[] { inNode })) {
+                        for (var i = 0; i < domainValueCount; ++i) {
+                            var domainValue =
+                                domainValues.SingleOrDefault(v => v.Value == i && v.In == inNode && v.Out == outNode);
+                            if (domainValue == null) {
+                                domainValue = new FlowGridDomainValue(i, inNode, outNode);
+                                domainValues.Add(domainValue);
+                            }
+                            nodeValues.Add(domainValue);
+                        }
+                    }
+                    node.SetValues(nodeValues);
+                }
+            }
         }
 
         public void Initialize() {
@@ -64,9 +57,8 @@ namespace eZet.Csp.Flow {
                 var node = (FlowGridVariable)variable;
                 var nodes = new List<FlowGridVariable>(getNeighbours(node));
                 Constraints.Add(node.IsStart || node.IsEnd
-                    ? new MinMatchConstraint(1, node, nodes)
-                    : new MinMatchConstraint(2, node, nodes));
-                //Constraints.Add(new FlowGridConstraint(node, nodes));
+                    ? new FlowGridConstraint(1, node, nodes)
+                    : new FlowGridConstraint(2, node, nodes));
             }
         }
 
@@ -74,8 +66,7 @@ namespace eZet.Csp.Flow {
         public void AddEndPoint(int x, int y, int value) {
             var node = GetNode(x, y);
             node.IsEnd = true;
-            var values = node.DomainValues.Where(v => ((FlowGridDomainValue) v).Value == value).ToList();
-            node.SetValues(values);
+            node.SetValues(node.DomainValues.Where(v => ((FlowGridDomainValue) v).Value == value).DistinctBy(v => ((FlowGridDomainValue)v).In).ToList());
             return;
 
             var neighbours = getNeighbours(node);
@@ -92,7 +83,7 @@ namespace eZet.Csp.Flow {
         public void AddStartPoint(int x, int y, int value) {
             var node = GetNode(x, y);
             node.IsStart = true;
-            node.SetValues(node.DomainValues.Where(v => ((FlowGridDomainValue)v).Value == value).ToList());
+            node.SetValues(node.DomainValues.Where(v => ((FlowGridDomainValue)v).Value == value).DistinctBy(v => ((FlowGridDomainValue)v).Out).ToList());
             return;
             var neighbours = getNeighbours(node);
             var domainValues = new List<FlowGridDomainValue>();

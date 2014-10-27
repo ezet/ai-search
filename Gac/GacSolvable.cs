@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using eZet.AStar;
 using eZet.Csp.Constraints;
 using MoreLinq;
@@ -162,7 +160,6 @@ namespace eZet.Csp {
         /// </summary>
         /// <returns></returns>
         private Path runIncrementalSearch() {
-            Thread.Sleep(500);
             return Algorithm.Run(this);
         }
 

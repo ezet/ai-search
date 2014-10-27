@@ -121,7 +121,7 @@ namespace eZet.Csp.Flow.ViewModels {
             StatusText = "Processing...";
             Cts = new CancellationTokenSource();
             Algorithm.CancellationToken = Cts.Token;
-            var task = Task.Run(() => _solver.Solve(Model, Algorithm));
+            var task = Task.Run(() => _solver.Solve(Model, new AStar.Algorithms.AStar(Delay)));
             var result = await task;
             Running = false;
             if (Cts.IsCancellationRequested) {
@@ -139,16 +139,16 @@ namespace eZet.Csp.Flow.ViewModels {
         }
 
         private void executeOpen() {
-            Result = null;
             var dialog = new OpenFileDialog();
             if (dialog.ShowDialog().GetValueOrDefault()) {
                 try {
+                    StatusText = "Loading Flowgrid...";
                     Model = _solver.Load(dialog.FileName);
                     Nodes = new BindableCollection<FlowGridVariable>(Model.Nodes.Cast<FlowGridVariable>());
-                    StatusText = "Graph loaded";
+                    StatusText = "Flowgrid loaded";
+                    Result = null;
                 } catch (Exception e) {
-                    throw;
-                    StatusText = "Could not load graph: Invalid format";
+                    StatusText = "Could not load Flowgrid: Invalid format";
                     return;
                 }
             }
@@ -162,6 +162,8 @@ namespace eZet.Csp.Flow.ViewModels {
             if (param == "dfs")
                 Algorithm = new Dfs(Delay);
         }
+
+
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs args) {
             if (args.PropertyName == "Delay") {
